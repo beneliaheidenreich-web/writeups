@@ -36,19 +36,14 @@ and browse by name (the app is vhost‑based).
 
 ### Subdomain / vhost enumeration
 ```bash
-ffuf -u http://team.thm/ -H "Host: FUZZ.team.thm" \
-     -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
-     -fs <baseline_size>
+└─$ ffuf -u http://team.thm -H "Host: FUZZ.team.thm" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs 11366
+
 ```
+`-fs` to filter out false positives.
 Candidates probed: `www`, `dev`, `www.dev`. The interesting one is **`dev.team.thm`**.
 
 ### Directory enumeration
-```bash
-gobuster dir -u http://team.thm/ \
-     -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
-     -x php,txt,html
-```
-Found: `/assets`, `/images`, `/robots.txt`.
+![alt text](pictures/gobuster_team.thm.png)
 
 ### The lead
 `dev.team.thm` exposes a page that links to:
